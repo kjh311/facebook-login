@@ -8,7 +8,7 @@ router.get('/', function(req, res, next){
 
 //this is going to be our view when the user is logged in
 router.get('/home', isLoggedIn, function(req, res, next) {
-  console.log(reg.user);
+  console.log(req.user);
   res.render('index', { title: 'Express', user: req.user });
 });
 
@@ -27,6 +27,16 @@ router.get('/auth/facebook', passport.authenticate('facebook',
 }));
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook',{
+  successRedirect: '/home',
+  failureRedirect: '/login'
+}));
+
+router.get('/auth/twitter', passport.authenticate('twitter',
+ {scope:
+  ['email', 'user_birthday', 'user_location']
+}));
+
+router.get('/auth/twitter/callback', passport.authenticate('twitter',{
   successRedirect: '/home',
   failureRedirect: '/login'
 }));

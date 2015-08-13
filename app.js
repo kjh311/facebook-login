@@ -9,6 +9,7 @@ var passport = require('passport');
 var session = require('express-session');
 
 var Facebook = require('./config/facebook');
+var Twitter = require('./config/twitter');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -64,6 +65,16 @@ if (app.get('env') === 'development') {
     });
   });
 }
+
+app.get('/auth/twitter',
+  passport.authenticate('twitter'));
+
+app.get('/auth/twitter/callback',
+  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
 
 // production error handler
 // no stacktraces leaked to user
